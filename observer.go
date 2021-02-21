@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/DataDog/datadog-go/statsd"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/metrics"
 )
 
@@ -11,14 +12,16 @@ var _ metrics.Observer = (*observer)(nil)
 
 type observer struct {
 	client     *statsd.Client
+	logHelper  *log.Helper
 	metricName string
 	tempTags   []string
 }
 
 // NewDDObserver new a DataDog observer and returns Observer.
-func NewDDObserver(metricName string) metrics.Observer {
+func NewDDObserver(metricName string, logger log.Logger) metrics.Observer {
 	return &observer{
 		client:     ddClient,
+		logHelper:  log.NewHelper("metrics/observer", logger),
 		metricName: metricName,
 	}
 }
@@ -34,5 +37,7 @@ func (d *observer) With(lvs ...string) metrics.Observer {
 }
 
 func (d *observer) Observe(value float64) {
-	d.client.Timing(d.metricName, time.Duration(value)*time.Second, d.tempTags, defaultRate)
+	if err := d.client.Timing(d.metricName, time.Duration(value)*time.Second, d.tempTags, defaultRate); err != nil {
+		d.logHelper.Warnf("observe %+v error %+v", d.tempTags, err)
+	}
 }
