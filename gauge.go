@@ -15,8 +15,8 @@ type gauge struct {
 	tempTags   []string
 }
 
-// NewDDGauge new a DataDog gauge and returns Gauge.
-func NewDDGauge(metricName string, logger log.Logger) metrics.Gauge {
+// NewGauge new a DataDog gauge and returns Gauge.
+func NewGauge(metricName string, logger log.Logger) metrics.Gauge {
 	return &gauge{
 		client:     ddClient,
 		logHelper:  log.NewHelper("metrics/gauge", logger),

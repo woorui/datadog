@@ -15,8 +15,8 @@ type counter struct {
 	tempTags   []string
 }
 
-// NewDDCounter new a DataDog counter and returns Counter.
-func NewDDCounter(metricName string, logger log.Logger) metrics.Counter {
+// NewCounter new a DataDog counter and returns Counter.
+func NewCounter(metricName string, logger log.Logger) metrics.Counter {
 	return &counter{
 		client:     ddClient,
 		logHelper:  log.NewHelper("metrics/counter", logger),
