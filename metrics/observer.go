@@ -39,5 +39,5 @@ func (d *timing) With(values ...string) metrics.Observer {
 }
 
 func (d *timing) Observe(value float64) {
-	d.opts.client.Timing(d.name, time.Duration(value)*time.Second, d.lvs, d.opts.sampleRate)
+	d.opts.client.TimeInMilliseconds(d.name, value*float64(time.Second/time.Millisecond), d.lvs, d.opts.sampleRate)
 }
