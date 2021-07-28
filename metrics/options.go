@@ -19,9 +19,9 @@ func WithSampleRate(rate float64) Option {
 }
 
 // WithLabels with labels option.
-func WithLabels(lvs float64) Option {
+func WithLabels(lvs ...string) Option {
 	return func(o *options) {
-		o.sampleRate = lvs
+		o.labels = lvs
 	}
 }
 
